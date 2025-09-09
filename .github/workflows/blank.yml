@@ -1,53 +1,13 @@
-name: Lejian Sports Runner
+name: Ultimate Schedule Test
 
-# 定义工作流的触发条件
 on:
-  # 这个触发器允许你手动从 Actions 页面运行
-  workflow_dispatch:
-
-  # 这个触发器负责按计划定时运行
   schedule:
-    # ==================== 今晚的测试任务 ====================
-    # cron 表达式对应北京时间 21:40，用于测试
-    - cron: '40 13 * * *'
+    # 对应北京时间 21:55，请根据当前时间修改
+    - cron: '55 13 * * *'
 
-    # ==================== 每天的正式任务 ====================
-    # cron 表达式对应北京时间 早上 7:00
-    - cron: '0 23 * * *'
-    # cron 表达式对应北京时间 早上 7:20
-    - cron: '20 23 * * *'
-    # cron 表达式对应北京时间 早上 7:40
-    - cron: '40 23 * * *'
-
-# 定义要执行的具体任务
 jobs:
-  run-script:
-    # 在最新的 Ubuntu Linux 环境上运行
+  test-the-scheduler:
     runs-on: ubuntu-latest
-    
-    # 任务包含的步骤
     steps:
-      # 步骤1：下载你的代码到运行环境中
-      - name: Checkout repository code
-        uses: actions/checkout@v4
-
-      # 步骤2：设置好 Python 3.10 环境
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      # 步骤3：安装 requirements.txt 中定义的依赖库
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-
-      # 步骤4：运行你的 Python 脚本
-      - name: Run the Python script
-        env:
-          # 从仓库的 Secrets 中读取账号密码并设置为环境变量
-          LEJIAN_USERNAME: ${{ secrets.LEJIAN_USERNAME }}
-          LEJIAN_PASSWORD: ${{ secrets.LEJIAN_PASSWORD }}
-        # 运行 run.py 文件
-        run: python run.py
+      - name: Print a message
+        run: echo "Hello! The scheduler is working! The time is $(date)"
