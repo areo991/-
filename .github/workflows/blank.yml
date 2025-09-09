@@ -3,13 +3,12 @@ name: Lejian Sports Runner
 
 # 触发工作流的事件
 on:
-  # 1. 允许你手动在Actions页面点击按钮来运行，方便测试
+  # workflow_dispatch 和 schedule 都是 on 的子项目，所以它们有相同的缩进
   workflow_dispatch:
-  
-  # 2. 定时运行
-schedule:
-    # cron表达式，对应北京时间 晚上 21:21
-    - cron: '21 13 * * *'
+
+  schedule:
+    # cron 是 schedule 的子项目，所以它要再缩进一层
+    - cron: '24 13 * * *'
 # 定义要执行的任务
 jobs:
   run-script:
