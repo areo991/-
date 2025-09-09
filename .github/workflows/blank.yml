@@ -8,7 +8,7 @@ on:
 
   schedule:
     # cron 是 schedule 的子项目，所以它要再缩进一层
-    - cron: '24 13 * * *'
+    - cron: '29 13 * * *'
 # 定义要执行的任务
 jobs:
   run-script:
