@@ -1,44 +1,49 @@
-# 工作流的名称
 name: Lejian Sports Runner
 
-# 触发工作流的事件
+# 定义工作流的触发条件
 on:
-  # workflow_dispatch 和 schedule 都是 on 的子项目，所以它们有相同的缩进
+  # 这个触发器允许你手动从 Actions 页面运行，方便随时使用
   workflow_dispatch:
 
+  # 这个触发器负责按计划定时运行
   schedule:
-    # cron 是 schedule 的子项目，所以它要再缩进一层
-    - cron: '29 13 * * *'
-# 定义要执行的任务
+    # 重要提示：cron 计划使用的是 UTC 世界标准时间。
+    # 北京时间 (UTC+8) 比 UTC 早8个小时。
+    # 要在北京时间早上 7:00 运行，你需要设置为前一天的 23:00 UTC。
+    
+    - cron: '0 23 * * *'  # 对应北京时间 早上 7:00
+    - cron: '20 23 * * *' # 对应北京时间 早上 7:20
+    - cron: '40 23 * * *' # 对应北京时间 早上 7:40
+
+# 定义要执行的具体任务
 jobs:
   run-script:
-    # 使用最新的Ubuntu Linux环境来运行
+    # 在最新的 Ubuntu Linux 环境上运行
     runs-on: ubuntu-latest
-
-    # 任务的步骤
+    
+    # 任务包含的步骤
     steps:
-      # 第一步：把你的代码下载到运行环境中
+      # 步骤1：下载你的代码到运行环境中
       - name: Checkout repository code
         uses: actions/checkout@v4
 
-      # 第二步：设置Python环境
+      # 步骤2：设置好 Python 3.10 环境
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10' # 你可以指定需要的Python版本
+          python-version: '3.10'
 
-      # 第三步：安装脚本依赖的库
+      # 步骤3：安装 requirements.txt 中定义的依赖库
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 第四步：运行你的Python脚本
+      # 步骤4：运行你的 Python 脚本
       - name: Run the Python script
         env:
-          # 将我们设置的Secrets注入到环境变量中
+          # 从仓库的 Secrets 中读取账号密码并设置为环境变量
           LEJIAN_USERNAME: ${{ secrets.LEJIAN_USERNAME }}
           LEJIAN_PASSWORD: ${{ secrets.LEJIAN_PASSWORD }}
-        run: |
-          # 注意：这里的文件名要和你上传的Python脚本名一致
-          python run.py
+        # 运行 run.py 文件
+        run: python run.py
