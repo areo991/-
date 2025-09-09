@@ -1,0 +1,5 @@
+Pillow==11.3.0
+pycryptodome==3.22.0
+pystray==0.19.5
+pytz==2025.2
+Requests==2.32.5
